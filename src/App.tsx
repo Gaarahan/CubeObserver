@@ -5,21 +5,21 @@ import { useState } from "react";
 
 const boxConfig: Record<string, IBoxConfig[]> = {
   A: [
-    { color: "black", position: [0, 0, 0], borderColor: "blue" },
-    { color: "#F3F5EC", position: [1, 0, 0], borderColor: "blue" },
-    { color: "#F3F5EC", position: [0, 1, 0], borderColor: "blue" },
+    { position: [0, 0, 0], borderColor: "blue", blackSide: 'front' },
+    { position: [1, 0, 0], borderColor: "blue" },
+    { position: [0, 1, 0], borderColor: "blue" },
 
-    { color: "black", position: [1, 1, 0], borderColor: "red" },
-    { color: "#F3F5EC", position: [2, 1, 0], borderColor: "red" },
-    { color: "#F3F5EC", position: [1, 2, 0], borderColor: "red" },
+    { position: [1, 1, 0], borderColor: "red", blackSide: 'front' },
+    { position: [2, 1, 0], borderColor: "red" },
+    { position: [1, 2, 0], borderColor: "red" },
 
-    { color: "black", position: [3, 0, 0], borderColor: "green" },
-    { color: "#F3F5EC", position: [2, 0, 0], borderColor: "green" },
-    { color: "#F3F5EC", position: [3, 1, 0], borderColor: "green" },
+    { position: [3, 0, 0], borderColor: "green", blackSide: 'front' },
+    { position: [2, 0, 0], borderColor: "green" },
+    { position: [3, 1, 0], borderColor: "green" },
   ],
   B: [],
   C: [],
-  D: []
+  D: [],
 };
 
 function App() {
@@ -48,6 +48,9 @@ function App() {
           <Radio value={"C"}>C</Radio>
           <Radio value={"D"}>D</Radio>
         </Radio.Group>
+        <Typography.Link href={"https://github.com/Gaarahan/CubeObserver"}>
+          Source code
+        </Typography.Link>
       </Space>
 
       <Builder boxConfig={boxConfig[v]} />

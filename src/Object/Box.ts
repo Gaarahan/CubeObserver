@@ -1,6 +1,7 @@
 import {
   BoxGeometry,
   Color,
+  DoubleSide,
   EdgesGeometry,
   LineBasicMaterial,
   LineSegments,
@@ -10,18 +11,35 @@ import {
 } from "three";
 
 export interface IBoxConfig {
-  color: string;
   position: [number, number, number];
   borderColor: string;
+  blackSide?: "front" | "back" | "left" | "right" | "top" | "bottom";
 }
 
 export class Box {
-  private cube: Mesh;
+  private readonly cube: Mesh;
+  private readonly coloredBox: Mesh | null = null;
 
-  constructor({ color, position, borderColor }: IBoxConfig) {
+  constructor({ position, borderColor, blackSide }: IBoxConfig) {
     const geometry = new BoxGeometry(1, 1, 1);
-    const material = new MeshBasicMaterial({ color: new Color(color) });
-    this.cube = new Mesh(geometry, material);
+
+    if (blackSide) {
+      const white = new Color("#F3F5EC");
+      const black = new Color("black");
+
+      const allSideMaterials = new Array(6)
+        .fill(new MeshBasicMaterial({ color: white }));
+
+      allSideMaterials[0] = new MeshBasicMaterial({ color: black });
+
+      console.log(allSideMaterials);
+      this.cube = new Mesh(geometry, allSideMaterials);
+    } else {
+      const material = new MeshBasicMaterial({
+        color: new Color("#F3F5EC"),
+      });
+      this.cube = new Mesh(geometry, material);
+    }
 
     const edges = new EdgesGeometry(geometry);
     const edgeMaterial = new LineBasicMaterial({
@@ -37,5 +55,6 @@ export class Box {
 
   mountTo(scene: Scene) {
     scene.add(this.cube);
+    if (this.coloredBox) scene.add(this.coloredBox);
   }
 }
