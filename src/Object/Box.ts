@@ -10,7 +10,6 @@ import {
 } from "three";
 
 export interface IBoxConfig {
-  size: number;
   color: string;
   position: [number, number, number];
   borderColor: string;
@@ -19,8 +18,8 @@ export interface IBoxConfig {
 export class Box {
   private cube: Mesh;
 
-  constructor({ size, color, position, borderColor }: IBoxConfig) {
-    const geometry = new BoxGeometry(size, size, size);
+  constructor({ color, position, borderColor }: IBoxConfig) {
+    const geometry = new BoxGeometry(1, 1, 1);
     const material = new MeshBasicMaterial({ color: new Color(color) });
     this.cube = new Mesh(geometry, material);
 
