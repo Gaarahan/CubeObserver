@@ -27,7 +27,7 @@
     "eject": "react-scripts eject",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "https://gaarahan.github.io/cube-builder",
+  "homepage": "https://gaarahan.github.io/CubeObserver",
   "eslintConfig": {
     "extends": [
       "react-app",
