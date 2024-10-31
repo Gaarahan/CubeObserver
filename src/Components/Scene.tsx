@@ -7,9 +7,9 @@ import {
   WebGLRenderer,
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { Box, IBoxConfig } from "../../Object/Box";
+import { Box, IBoxConfig } from "../Object/Box";
 
-const BuilderComp = forwardRef((props: { boxConfig: IBoxConfig[] }, ref) => {
+const SceneComp = forwardRef(({value}: { value: IBoxConfig[] }, ref) => {
   const domRef = useRef<HTMLDivElement>(null);
   const scene = useRef<Scene | null>(null);
   const camera = useRef<PerspectiveCamera | null>(null);
@@ -24,23 +24,13 @@ const BuilderComp = forwardRef((props: { boxConfig: IBoxConfig[] }, ref) => {
       0.1,
       1000,
     );
+    camera.current.position.z = 10;
     renderer.current = new WebGLRenderer({});
     renderer.current.setSize(window.innerWidth, window.innerHeight - 40);
 
     domRef.current?.appendChild(renderer.current.domElement);
   };
 
-  const initCube = () => {
-    const s = scene.current!;
-
-    props.boxConfig.forEach((cfg) => {
-      new Box(cfg).mountTo(s);
-    });
-
-    if (camera.current) {
-      camera.current.position.z = 10;
-    }
-  };
   const initControl = () => {
     const controls = new OrbitControls(
       camera.current!,
@@ -67,11 +57,19 @@ const BuilderComp = forwardRef((props: { boxConfig: IBoxConfig[] }, ref) => {
     scene.current!.add(axesHelper);
   };
 
+  const initBoxesByCfg = (cfg: IBoxConfig[]) => {
+    const s = scene.current!;
+
+    cfg.forEach((c) => new Box(c).mountTo(s));
+
+    renderer.current!.render(scene.current!, camera.current!);
+  };
+
   useEffect(() => {
     initScene();
-    initCube();
     initAxes();
     const controls = initControl();
+    initBoxesByCfg(value)
 
     function animate() {
       requestAnimationFrame(animate);
@@ -88,17 +86,15 @@ const BuilderComp = forwardRef((props: { boxConfig: IBoxConfig[] }, ref) => {
     return () => {
       domRef.current?.removeChild(domRef.current?.childNodes?.[0]);
     };
-  }, []);
+  }, [value]);
 
   useImperativeHandle(ref, () => {
     return {
-      scene,
-      camera,
-      renderer,
+      initBoxesByCfg,
     };
   });
 
   return <div ref={domRef}></div>;
 });
 
-export default BuilderComp;
+export default SceneComp;

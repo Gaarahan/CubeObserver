@@ -1,7 +1,7 @@
-import Builder from "./Components/SceneBuilder/Builder";
 import { IBoxConfig, SideTypeEnum } from "./Object/Box";
 import { Radio, Space, Typography } from "antd";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import SceneComp from "./Components/Scene";
 
 const boxConfig: Record<string, IBoxConfig[]> = {
   A: [
@@ -24,6 +24,7 @@ const boxConfig: Record<string, IBoxConfig[]> = {
 
 function App() {
   const [v, changeV] = useState("A");
+  const ref = useRef<{ initBoxesByCfg: (cfg: IBoxConfig[]) => void }>();
 
   return (
     <>
@@ -40,7 +41,10 @@ function App() {
         </Typography>
         <Radio.Group
           size={"large"}
-          onChange={(e) => changeV(e.target.value)}
+          onChange={(e) => {
+            changeV(e.target.value);
+            ref.current?.initBoxesByCfg(boxConfig[v]);
+          }}
           value={v}
         >
           <Radio value={"A"}>A</Radio>
@@ -52,8 +56,7 @@ function App() {
           Source code
         </Typography.Link>
       </Space>
-
-      <Builder boxConfig={boxConfig[v]} />
+      <SceneComp ref={ref} value={boxConfig[v]} />;
     </>
   );
 }
