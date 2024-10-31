@@ -38,7 +38,27 @@ const boxConfig: Record<string, IBoxConfig[]> = {
     { position: [1, 2, -1], borderColor: "green" },
     { position: [1, 1, 0], borderColor: "green" },
   ],
-  C: [],
+  C: [
+    { position: [0, 0, 0], borderColor: "blue", blackSide: SideTypeEnum.back },
+    { position: [0, 1, 0], borderColor: "blue" },
+    { position: [0, 0, -1], borderColor: "blue" },
+
+    {
+      position: [1, 1, 0],
+      borderColor: "red",
+      blackSide: SideTypeEnum.front,
+    },
+    { position: [1, 0, 0], borderColor: "red" },
+    { position: [1, 1, -1], borderColor: "red" },
+
+    {
+      position: [0, 2, 0],
+      borderColor: "green",
+      blackSide: SideTypeEnum.top,
+    },
+    { position: [1, 2, 0], borderColor: "green" },
+    { position: [0, 3, 0], borderColor: "green" },
+  ],
   D: [],
 };
 
