@@ -10,29 +10,45 @@ import {
   Scene,
 } from "three";
 
+export enum SideTypeEnum {
+  front,
+  back,
+  left,
+  right,
+  top,
+  bottom,
+}
+
 export interface IBoxConfig {
   position: [number, number, number];
   borderColor: string;
-  blackSide?: "front" | "back" | "left" | "right" | "top" | "bottom";
+  blackSide?: SideTypeEnum;
 }
 
 export class Box {
   private readonly cube: Mesh;
   private readonly coloredBox: Mesh | null = null;
 
+  private getAllSideMaterials(side?: SideTypeEnum) {
+    const white = new Color("#F3F5EC");
+    const black = new Color("black");
+
+    const allSideMaterials = new Array(6).fill(
+      new MeshBasicMaterial({ color: white }),
+    );
+
+    if (side) {
+      allSideMaterials[side] = new MeshBasicMaterial({ color: black });
+    }
+
+    return allSideMaterials;
+  }
+
   constructor({ position, borderColor, blackSide }: IBoxConfig) {
     const geometry = new BoxGeometry(1, 1, 1);
 
     if (blackSide) {
-      const white = new Color("#F3F5EC");
-      const black = new Color("black");
-
-      const allSideMaterials = new Array(6)
-        .fill(new MeshBasicMaterial({ color: white }));
-
-      allSideMaterials[0] = new MeshBasicMaterial({ color: black });
-
-      console.log(allSideMaterials);
+      const allSideMaterials = this.getAllSideMaterials(blackSide);
       this.cube = new Mesh(geometry, allSideMaterials);
     } else {
       const material = new MeshBasicMaterial({

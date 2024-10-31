@@ -1,19 +1,19 @@
 import Builder from "./Components/SceneBuilder/Builder";
-import { IBoxConfig } from "./Object/Box";
+import { IBoxConfig, SideTypeEnum } from "./Object/Box";
 import { Radio, Space, Typography } from "antd";
 import { useState } from "react";
 
 const boxConfig: Record<string, IBoxConfig[]> = {
   A: [
-    { position: [0, 0, 0], borderColor: "blue", blackSide: 'front' },
+    { position: [0, 0, 0], borderColor: "blue", blackSide: SideTypeEnum.top },
     { position: [1, 0, 0], borderColor: "blue" },
     { position: [0, 1, 0], borderColor: "blue" },
 
-    { position: [1, 1, 0], borderColor: "red", blackSide: 'front' },
+    { position: [1, 1, 0], borderColor: "red", blackSide: SideTypeEnum.top },
     { position: [2, 1, 0], borderColor: "red" },
     { position: [1, 2, 0], borderColor: "red" },
 
-    { position: [3, 0, 0], borderColor: "green", blackSide: 'front' },
+    { position: [3, 0, 0], borderColor: "green", blackSide: SideTypeEnum.top },
     { position: [2, 0, 0], borderColor: "green" },
     { position: [3, 1, 0], borderColor: "green" },
   ],

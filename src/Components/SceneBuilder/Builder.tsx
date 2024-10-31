@@ -1,5 +1,11 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
-import { Color, PerspectiveCamera, Scene, WebGLRenderer } from "three";
+import {
+  AxesHelper,
+  Color,
+  PerspectiveCamera,
+  Scene,
+  WebGLRenderer,
+} from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { Box, IBoxConfig } from "../../Object/Box";
 
@@ -19,7 +25,7 @@ const BuilderComp = forwardRef((props: { boxConfig: IBoxConfig[] }, ref) => {
       1000,
     );
     renderer.current = new WebGLRenderer({});
-    renderer.current.setSize(window.innerWidth, (window.innerHeight - 40));
+    renderer.current.setSize(window.innerWidth, window.innerHeight - 40);
 
     domRef.current?.appendChild(renderer.current.domElement);
   };
@@ -56,9 +62,15 @@ const BuilderComp = forwardRef((props: { boxConfig: IBoxConfig[] }, ref) => {
     return controls;
   };
 
+  const initAxes = () => {
+    const axesHelper = new AxesHelper(8); // 50是坐标轴的长度
+    scene.current!.add(axesHelper);
+  };
+
   useEffect(() => {
     initScene();
     initCube();
+    initAxes();
     const controls = initControl();
 
     function animate() {
