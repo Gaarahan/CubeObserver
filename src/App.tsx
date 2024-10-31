@@ -1,6 +1,6 @@
 import { IBoxConfig, SideTypeEnum } from "./Object/Box";
 import { Radio, Space, Typography } from "antd";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import SceneComp from "./Components/Scene";
 
 const boxConfig: Record<string, IBoxConfig[]> = {
@@ -17,14 +17,33 @@ const boxConfig: Record<string, IBoxConfig[]> = {
     { position: [2, 0, 0], borderColor: "green" },
     { position: [3, 1, 0], borderColor: "green" },
   ],
-  B: [],
+  B: [
+    { position: [0, 0, 0], borderColor: "blue", blackSide: SideTypeEnum.back },
+    { position: [0, 1, 0], borderColor: "blue" },
+    { position: [0, 0, -1], borderColor: "blue" },
+
+    {
+      position: [1, 0, -1],
+      borderColor: "red",
+      blackSide: SideTypeEnum.front,
+    },
+    { position: [1, 0, 0], borderColor: "red" },
+    { position: [1, 1, -1], borderColor: "red" },
+
+    {
+      position: [1, 2, 0],
+      borderColor: "green",
+      blackSide: SideTypeEnum.front,
+    },
+    { position: [1, 2, -1], borderColor: "green" },
+    { position: [1, 1, 0], borderColor: "green" },
+  ],
   C: [],
   D: [],
 };
 
 function App() {
   const [v, changeV] = useState("A");
-  const ref = useRef<{ initBoxesByCfg: (cfg: IBoxConfig[]) => void }>();
 
   return (
     <>
@@ -43,7 +62,6 @@ function App() {
           size={"large"}
           onChange={(e) => {
             changeV(e.target.value);
-            ref.current?.initBoxesByCfg(boxConfig[v]);
           }}
           value={v}
         >
@@ -56,7 +74,7 @@ function App() {
           Source code
         </Typography.Link>
       </Space>
-      <SceneComp ref={ref} value={boxConfig[v]} />;
+      <SceneComp value={boxConfig[v]} />
     </>
   );
 }

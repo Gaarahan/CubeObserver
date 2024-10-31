@@ -33,11 +33,11 @@ export class Box {
     const white = new Color("#F3F5EC");
     const black = new Color("black");
 
-    const allSideMaterials = new Array(6).fill(
+    let allSideMaterials = new Array(6).fill(
       new MeshBasicMaterial({ color: white }),
     );
 
-    if (side) {
+    if (side !== undefined) {
       allSideMaterials[side] = new MeshBasicMaterial({ color: black });
     }
 
@@ -47,15 +47,8 @@ export class Box {
   constructor({ position, borderColor, blackSide }: IBoxConfig) {
     const geometry = new BoxGeometry(1, 1, 1);
 
-    if (blackSide) {
-      const allSideMaterials = this.getAllSideMaterials(blackSide);
-      this.cube = new Mesh(geometry, allSideMaterials);
-    } else {
-      const material = new MeshBasicMaterial({
-        color: new Color("#F3F5EC"),
-      });
-      this.cube = new Mesh(geometry, material);
-    }
+    const allSideMaterials = this.getAllSideMaterials(blackSide);
+    this.cube = new Mesh(geometry, allSideMaterials);
 
     const edges = new EdgesGeometry(geometry);
     const edgeMaterial = new LineBasicMaterial({

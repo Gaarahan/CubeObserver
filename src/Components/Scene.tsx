@@ -9,7 +9,7 @@ import {
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { Box, IBoxConfig } from "../Object/Box";
 
-const SceneComp = forwardRef(({value}: { value: IBoxConfig[] }, ref) => {
+const SceneComp = ({ value }: { value: IBoxConfig[] }) => {
   const domRef = useRef<HTMLDivElement>(null);
   const scene = useRef<Scene | null>(null);
   const camera = useRef<PerspectiveCamera | null>(null);
@@ -25,6 +25,7 @@ const SceneComp = forwardRef(({value}: { value: IBoxConfig[] }, ref) => {
       1000,
     );
     camera.current.position.z = 10;
+    camera.current.position.x = 5;
     renderer.current = new WebGLRenderer({});
     renderer.current.setSize(window.innerWidth, window.innerHeight - 40);
 
@@ -61,15 +62,13 @@ const SceneComp = forwardRef(({value}: { value: IBoxConfig[] }, ref) => {
     const s = scene.current!;
 
     cfg.forEach((c) => new Box(c).mountTo(s));
-
-    renderer.current!.render(scene.current!, camera.current!);
   };
 
   useEffect(() => {
     initScene();
     initAxes();
     const controls = initControl();
-    initBoxesByCfg(value)
+    initBoxesByCfg(value);
 
     function animate() {
       requestAnimationFrame(animate);
@@ -88,13 +87,7 @@ const SceneComp = forwardRef(({value}: { value: IBoxConfig[] }, ref) => {
     };
   }, [value]);
 
-  useImperativeHandle(ref, () => {
-    return {
-      initBoxesByCfg,
-    };
-  });
-
   return <div ref={domRef}></div>;
-});
+};
 
 export default SceneComp;
